@@ -217,7 +217,7 @@ void HammingCode::magicencode(){
     for (int i = 0 ; i < 71; i++){
         block[i] = new_block[i];
     }
-    block[71] = block[0];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    block[71] = block[0];
     block[0]='/';
     new_block = delChar(block, 0);
     for (int i = 0 ; i < 71; i++){
@@ -225,42 +225,77 @@ void HammingCode::magicencode(){
     }
     cout << endl;
 
-    /*
     //3
-    block[71]=block[1];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
+    block[71]=block[1];
     block[1]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    new_block = delChar(block, 1);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
     //7
-    block[71]=block[4];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
+    block[71]=block[4];
     block[4]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    new_block = delChar(block, 4);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
     //15
-    block[71]=block[11];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
+    block[71]=block[11];
     block[11]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    new_block = delChar(block, 11);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
     //31
-    block[71]=block[26];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
+    block[71]=block[26];
     block[26]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    new_block = delChar(block, 26);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
     //63
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
     block[71]=block[57];
-   //перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
     block[57]='/';
-    block.erase(block.end());
+    new_block = delChar(block, 57);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
     //систематический код
-    for(int i=0;i<77;i++){
-        cout<<block[i];
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
     }
     cout<<endl;
-    cout<<"sdfsdfgdgsfg"<<endl;
 
-    outputFile.insert( outputFile.end(),block.begin(), block.end() );
-    for(int i=0;i<77;i++){
+    for (int i = 0 ; i < 71; i++){
+        outputFile += block[i];
+    }
+    cout<< "------ OUTPUT FILE ------\n";
+    for(int i=0;i<71;i++){
         cout<<outputFile[i];
     }
-    cout<<endl; */
+    cout<<endl;
 }
