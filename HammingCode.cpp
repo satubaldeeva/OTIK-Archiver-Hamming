@@ -19,14 +19,13 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
         char byte[1];
         while (inFile.read(byte, 1)) {
             int temp_byte = byte[0];
-            cout << temp_byte << " (21)" << endl;
             std::bitset<8> bitset = temp_byte;
-            cout << bitset << " (27)(bit)" << endl;
+            cout <<temp_byte<<" -- > "<< bitset << " (bit)" << endl;
             textFile+=bitset.to_string();
 
         }
         cout<<textFile<<endl;
-        magicencode();
+        //magicencode();
     }
 }
 
