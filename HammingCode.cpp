@@ -24,8 +24,11 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
             textFile+=bitset.to_string();
 
         }
-        cout<<textFile<<endl;
-        //magicencode();
+        cout<<"--------------------"<<endl;
+        cout<<"text in file without changes:\n"<< textFile<<endl;
+        cout<<"size text: "<< textFile.length()<<endl;
+        cout<<"--------------------"<<endl;
+        magicencode();
     }
 }
 
@@ -35,116 +38,194 @@ void HammingCode::RemoveProtection(const string& inFileName, const string& outFi
 
 //64 - info
 // -control
+string HammingCode::delChar(string st[], int n){
+    string str;
+    for (int i = 0; i < 72; i++)
+    {
+        if (i != n)
+            str += st[i];
+    }
+    return str;
+}
+
 void HammingCode::magicencode(){
-    vector<char> block;
-   //non system
+    string block[72];
+
    //запись набора значений в строку с добавлением контрольных битов
     for(int i=0;i<71;i++){
-        if(i== 0 || i == 1 || i ==7 ||i==15 || i==31 || i==63)
-        {block[i]='0';}
-
+        if(i== 0 || i == 1 || i ==3 || i ==7 || i==15 || i==31 || i==63){
+            block[i]='0';
+        }
     }
+
     block[2]=textFile[0];
     block[4]=textFile[1];
     block[5]=textFile[2];
     block[6]=textFile[3];
-    for(int i= 4 ;i<11;i++){
+
+    for(int i = 4 ; i < 11; i++){ // с 8 по 14
         block[i+4]=textFile[i];
     }
-    for(int i= 11 ;i<26;i++){
+    for(int i = 11 ; i < 26; i++){ // c 16 по 31
         block[i+5]=textFile[i];
     }
-    for(int i= 26 ;i<57;i++){
+    for(int i = 26; i < 57; i++){ // c 32 по 62
         block[i+6]=textFile[i];
     }
-    for(int i= 56 ;i<64;i++){
+    for(int i = 57; i < 64; i++){ // с 57 по 70
         block[i+7]=textFile[i];
     }
-    //начало подсчета значения контрольных битов//0
-    int sum=0;
-    for(int i=2;i<71;i=i+2){
-        sum+=int((block[i]));
+
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
+
+    //начало подсчета значения контрольных битов
+    // 0
+    int sum = 0;
+    for(int i = 2 ; i < 71; i = i + 2){
+        sum += stoi(block[i]);
 
     }
+
     cout.flush();
-    cout<<sum<<"dfsdf"<<endl;
+    cout<<"sum for 0: "<< sum <<endl;
+
     block[0]=sum % 2 == 0 ?  '0' : '1';
+
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
 
     //1
     sum=0;
-    for(int i=2;i<71;i=i+4){
-        if(i==2){
-            sum+=int((block[i]));
-        }
-        sum+=int((block[i]));
-        sum+=int((block[i-1]));
+    for(int i = 2; i < 71; i = i + 4){
+        /*if(i==2){
+            sum+=stoi(block[i]);
+        }*/
+        sum+=stoi(block[i]);
+        sum+=stoi(block[i-1]);
     }
 
     block[1]=sum % 2 == 0 ?  '0' : '1';
+
+    cout.flush();
+    cout<<"sum for 1: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
+
     //3
     sum=0;
-    for(int i=3;i<71;i=i+8){
-        sum+=int((block[i]));
-        sum+=int((block[i+1]));
-        sum+=int((block[i+2]));
-        sum+=int((block[i+3]));
+    for(int i = 3; i < 71; i = i + 8){
+        sum+=stoi(block[i]);
+        sum+=stoi(block[i+1]);
+        sum+=stoi(block[i+2]);
+        sum+=stoi(block[i+3]);
 
     }
     block[3]=sum % 2 == 0 ?  '0' : '1';
+    cout.flush();
+    cout<<"sum for 3: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
 
     //7
     sum=0;
-    for(int i=7;i<71;i=i+16){
-        for(int j=0;j<8;j++)
+    for(int i = 7; i < 71; i = i + 16){
+        for(int j = 0; j < 8; j++)
             {
-                sum+=int((block[i+j]));
+                sum+=stoi(block[i+j]);
             }
 
     }
     block[7]=sum % 2 == 0 ?  '0' : '1';
+    cout.flush();
+    cout<<"sum for 7: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
 
     //15
     sum=0;
     for(int i=15;i<71;i=i+32){
         for(int j=0;j<16;j++)
         {
-            sum+=int((block[i+j]));
+            sum+=stoi(block[i+j]);
         }
 
     }
     block[15]=sum % 2 == 0 ?  '0' : '1';
+    cout.flush();
+    cout<<"sum for 15: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
 
     //31
     sum=0;
-    for(int i=31;i<71;i=i+64){
-        for(int j=0;j<32;j++)
-        {
-            sum+=int((block[i+j]));
+    for(int i = 31; i < 71; i = i + 64){
+        for(int j=0;j<32;j++){
+            sum+=stoi(block[i+j]);
         }
 
     }
     block[31]=sum % 2 == 0 ?  '0' : '1';
+    cout.flush();
+    cout<<"sum for 31: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
+
     //63
     sum=0;
-    for(int i=63;i<71;i=i+128){
-        for(int j=0;j<9;j++)
-        {
-            sum+=int((block[i+j]));
+    for(int i = 63; i < 71; i = i + 128){
+        for(int j = 0; j < 8; j++){
+            sum+=stoi(block[i+j]);
         }
 
     }
     block[63]=sum % 2 == 0 ?  '0' : '1';
+    cout.flush();
+    cout<<"sum for 63: "<< sum <<endl;
+    for (int i = 0 ; i < 71; i++){
+        cout<<block[i];
+    }
+    cout << endl;
+    cout << "\n--------------------------\n";
+
     //end count control bit---------
     //0
-    block[71]=block[0];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
-    block[0]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    string new_block;
+    block[71] = block[0];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    block[0] = '/';
+    new_block = delChar(block, 0);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
     //1
-    block[71]=block[0];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
+    for (int i = 0 ; i < 71; i++){
+        block[i] = new_block[i];
+    }
+    block[71] = block[0];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
     block[0]='/';
-    block.erase((std::remove(block.begin(),block.end(),'/')),block.end());
+    new_block = delChar(block, 0);
+    for (int i = 0 ; i < 71; i++){
+        cout<<new_block[i];
+    }
+    cout << endl;
 
+    /*
     //3
     block[71]=block[1];//перенесли значение контрольного бита с индексом ноль в конец(создаем систематический код)
     block[1]='/';
@@ -181,5 +262,5 @@ void HammingCode::magicencode(){
     for(int i=0;i<77;i++){
         cout<<outputFile[i];
     }
-    cout<<endl;
+    cout<<endl; */
 }

@@ -10,7 +10,7 @@
 using namespace std;
 class HammingCode {
     string textFile;
-    vector<char> outputFile;
+    string outputFile;
     int N = 8;
 
 
@@ -20,6 +20,8 @@ public:
     void RemoveProtection(const string& inFileName, const string& outFileName);
 
     void magicencode();
+
+    string delChar(string st[], int n);
 };
 
 
