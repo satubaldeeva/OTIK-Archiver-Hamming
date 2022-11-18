@@ -13,8 +13,6 @@ class HammingCode {
     string outputFile;
     int N = 8;
 
-
-
 public:
     void AddProtection(const string& inFileName, const string& outFileName);
     void RemoveProtection(const string& inFileName, const string& outFileName);
@@ -22,6 +20,10 @@ public:
     void magicencode();
 
     string delChar(string st[], int n);
+
+    void clearOutputTextFile();
+
+    void writeToFileHamming(const string &outFileName);
 };
 
 

@@ -17,18 +17,46 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
 
         //reading symbols
         char byte[1];
-        while (inFile.read(byte, 1)) {
-            int temp_byte = byte[0];
-            std::bitset<8> bitset = temp_byte;
-            cout <<temp_byte<<" -- > "<< bitset << " (bit)" << endl;
-            textFile+=bitset.to_string();
+        bool flag = true;
+        while (flag) {
 
+            for (int i = 0; i < 8; i++) {
+                if (!inFile.read(byte, 1)) {
+                    flag = false;
+                    break;
+                }
+                int temp_byte = byte[0];
+                std::bitset<8> bitset = temp_byte;
+                cout << temp_byte << " -- > " << bitset << " (bit)" << endl;
+                textFile += bitset.to_string();
+            }
+            cout<<flag<<endl;
+            cout << "--------------------" << endl;
+
+            if(flag != false)
+            {  cout << "text in file without changes:\n" << textFile << endl;
+                cout << "size text: " << textFile.length() << endl;
+                cout << "--------------------" << endl;
+                magicencode();//когда 8 символов считали вызываем
+                clearOutputTextFile();
+            }
+            if(inFile.eof()){break;}
         }
-        cout<<"--------------------"<<endl;
-        cout<<"text in file without changes:\n"<< textFile<<endl;
-        cout<<"size text: "<< textFile.length()<<endl;
-        cout<<"--------------------"<<endl;
-        magicencode();
+
+//        while (inFile.read(byte, 1)) {
+//                int temp_byte = byte[0];
+//                std::bitset<8> bitset = temp_byte;
+//                cout << temp_byte << " -- > " << bitset << " (bit)" << endl;
+//                textFile += bitset.to_string();
+//            }
+//            cout << "--------------------" << endl;
+//            cout << "text in file without changes:\n" << textFile << endl;
+//            cout << "size text: " << textFile.length() << endl;
+//            cout << "--------------------" << endl;
+//            magicencode();//когда 8 символов считали вызываем
+//        }
+
+        inFile.close();
     }
 }
 
@@ -46,6 +74,9 @@ string HammingCode::delChar(string st[], int n){
             str += st[i];
     }
     return str;
+}
+void HammingCode::clearOutputTextFile(){
+    textFile.clear();
 }
 
 void HammingCode::magicencode(){
@@ -298,4 +329,16 @@ void HammingCode::magicencode(){
         cout<<outputFile[i];
     }
     cout<<endl;
+}
+
+void HammingCode::writeToFileHamming(const string& outFileName){
+    ofstream outputHamming;
+    outputHamming.open(outFileName, ios::app);
+    if (!outputHamming) {
+        cout << "Can't open inFileName " << outFileName << endl;
+
+    } else {
+
+        outputHamming << outputFile<< endl;}
+
 }
