@@ -9,12 +9,17 @@
 
 using namespace std;
 class HammingCode {
+    string textFile;
+    vector<char> outputFile;
+    int N = 8;
+
 
 
 public:
     void AddProtection(const string& inFileName, const string& outFileName);
     void RemoveProtection(const string& inFileName, const string& outFileName);
 
+    void magicencode();
 };
 
 
