@@ -28,6 +28,10 @@ public:
     void retByteCode();
 
     void returnNonSystem();
+
+    void bin_to_dec(const string &a);
+
+    void dec_to_ASCII(int a);
 };
 
 

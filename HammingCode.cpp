@@ -384,42 +384,8 @@ void HammingCode::writeToFileHamming(const string& outFileName){
 }
 
 void HammingCode::retByteCode(){
-//    byte[] res = new byte[1];
+
       int sum = 0;
-
-//    int error = 0;
-//64
-
-//sum = (stoi(outputFile); + outputFile.get(4) + outputFile.get(6) + outputFile.get(8) + outputFile.get(10)) % 2 == 0 ? (byte) 0 : (byte) 1;
-//    sum[1] = (outputFile.get(2) + outputFile.get(5) + outputFile.get(6) + outputFile.get(9) + outputFile.get(10)) % 2 == 0 ? (byte) 0 : (byte) 1;
-//    sum[2] = (outputFile.get(4) + outputFile.get(5) + outputFile.get(6) + outputFile.get(11)) % 2 == 0 ? (byte) 0 : (byte) 1;
-//    sum[3] = (outputFile.get(8) + outputFile.get(9) + outputFile.get(10) + outputFile.get(11)) % 2 == 0 ? (byte) 0 : (byte) 1;
-//
-//    if (sum[0] - outputFile.get(0) != 0) error += 1;
-//    if (sum[1] - outputFile.get(1) != 0) error += 2;
-//    if (sum[2] - outputFile.get(3) != 0) error += 4;
-//    if (sum[3] - outputFile.get(7) != 0) error += 8;
-//
-//    if (error != 0) {
-//        if (outputFile.get(error-1) == 0) outputFile.set(error-1, (byte) 1);
-//        else outputFile.set(error-1, (byte) 0);
-//    }
-//
-//    res[0] += outputFile.get(2) * pow(2, 7);
-//    res[0] += outputFile.get(4) * pow(2, 6);
-//    res[0] += outputFile.get(5) * pow(2, 5);
-//    res[0] += outputFile.get(6) * pow(2, 4);
-//    res[0] += outputFile.get(8) * pow(2, 3);
-//    res[0] += outputFile.get(9) * pow(2, 2);
-//    res[0] += outputFile.get(10) * pow(2, 1);
-//    res[0] += outputFile.get(11) * pow(2, 0);
-//
-//
-//    for (int i = 0; i < 12; i++) {
-//        outputFile.removeFirst();
-//    }
-//
-//    return res;
 }
 
 void HammingCode::returnNonSystem(){
@@ -442,8 +408,6 @@ void HammingCode::returnNonSystem(){
         cout<< newSystem[i];
     }
     cout<<endl;
-
-
     newSystem[0]=outputFile[64];
     newSystem[1]=outputFile[65];
     newSystem[3]=outputFile[66];
@@ -464,8 +428,6 @@ void HammingCode::returnNonSystem(){
     cout<<endl;
     //Make error
     newSystem[56]='0';
-
-
     //Make error
 
 
@@ -495,7 +457,7 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[1])-sum) !=0) errors +=2;
-  //  cout<<"sum for 1: "<< sum <<endl;
+
     //3
     sum=0;
     for(int i = 3; i < 71; i = i + 8){
@@ -512,9 +474,6 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[3])-sum) !=0) errors +=4;
-//    cout<<"position of error  "<<errors<<endl;
-//    cout.flush();
-//    cout<<"sum for 3: "<< sum <<endl;
 
     //7
     sum=0;
@@ -534,14 +493,9 @@ void HammingCode::returnNonSystem(){
         }
 
         }
-
-
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[7])-sum) !=0) errors +=8;
-//    cout<<"sum for 7: "<< sum <<endl;
-//    cout<<"position of error  "<<errors<<endl;
     cout.flush();
-
 
     //15
     sum=0;
@@ -562,8 +516,6 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[15])-sum) !=0) errors +=16;
-//    cout<<"sum for 15: "<< sum <<endl;
-//    cout<<"position of error  "<<errors<<endl;
     cout.flush();
 
 
@@ -586,9 +538,6 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[31])-sum) !=0) errors +=32;
-//    cout<<"position of error  "<<errors<<endl;
-//    cout.flush();
-//    cout<<"sum for 31: "<< sum <<endl;
 
     //63
     sum=0;
@@ -625,48 +574,46 @@ void HammingCode::returnNonSystem(){
     }
 
     string res;
-//    int c = 9;
-//    for(int i=0;i<71;i++){
-//        if(c!=0) {
-//            if (i == 0 || i == 1 || i == 3 || i == 7 || i == 15 || i == 31 || i == 63) {
-//
-//            } else {
-//                res += newSystem[i];
-//                c--;
-//
-//            }
-//
-//        }
-//        else{
-//            for(int i=0;i<8;i++){
-//                cout<<res[i];
-//            }
-//            cout<<endl;
-//            res.clear();
-//            c=9;
-//            i=i-1;
-//
-//        }
-    for (int i = 0; i < 71; i++){
-        if(res.size() < 8){
+
+    for (int i = 0; i <71; i++){
             if (i != 0 && i != 1 && i != 3 && i != 7 && i != 15 && i != 31 && i != 63) {
                 res+=newSystem[i];
-            }
-
         }
-        else{
+        if(res.size()==8){
             for(int i=0;i<8;i++){
                 cout<<res[i];
-            }
+
+            }bin_to_dec(res);
             cout<<endl;
+            cout.flush();
             res.clear();
-            i=i-1;
-
         }
-
     }
 
 
 
+
+
+
+}
+void HammingCode::bin_to_dec(const string& a){
+    int count=0;
+    for(int i =0;i<8;i++){
+        const char b = a[i];
+        if(b=='1'){
+            count+=pow(2,7-i);
+        }
+    }
+    cout<<"\n"<< count<<endl;
+
+    dec_to_ASCII(count);
+
+}
+
+void HammingCode::dec_to_ASCII(int a){
+
+    char n= static_cast<char>(a);
+
+    cout<<n<<endl;
 
 }
