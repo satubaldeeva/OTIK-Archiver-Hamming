@@ -19,7 +19,6 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
         char byte[1];
         bool flag = true;
         while (flag) {
-
             for (int i = 0; i < 8; i++) {
                 if (!inFile.read(byte, 1)) {
                     flag = false;
@@ -30,7 +29,8 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
                 cout << temp_byte << " -- > " << bitset << " (bit)" << endl;
                 textFile += bitset.to_string();
             }
-            cout<<flag<<endl;
+
+            cout<<"flag "<<flag<<endl;
             cout << "--------------------" << endl;
 
             if(flag != false)
@@ -43,14 +43,59 @@ void HammingCode::AddProtection(const string& inFileName, const string& outFileN
 
         inFile.close();
     }
-    returnNonSystem();
+
     writeToFileHamming(outFileName);
 
 
 }
 
 void HammingCode::RemoveProtection(const string& inFileName, const string& outFileName){
-    //todo HammingCode::RemoveProtection
+    //WORK WITH FILE
+    ifstream inFile;
+    ofstream extractedFile;
+    inFile.open(inFileName);
+    long currentPosition = 10;
+
+    //read archive to its end
+    //currentPosition+=HEADER_SZ;
+    if (!inFile)
+        cout << "Can't read file " << inFileName << endl;
+    else {
+        //reading symbols
+        char byte[1];
+        bool flag = true;
+        while (flag) {
+            for (int i = currentPosition; i < currentPosition+71; i++) {
+                if (!inFile.read(byte, 1)) {//1block
+                    cout<<"i here 74"<<endl;
+                    flag = false;
+                    break;
+                }
+                outputFile+=byte[0];
+            }
+
+            if(flag!=false){
+                returnNonSystem();//отправляем на проверку один блок
+                outputFile.clear();
+            }
+            if(inFile.eof())
+            {
+                break;
+            }
+
+        }
+        inFile.close();
+    }
+
+
+
+    extractedFile.open(outFileName, ios::app);
+    if (!extractedFile) {
+        cout << "Can't open inFileName " << outFileName << endl;
+    } else {
+        extractedFile<< textFile<< endl;
+    }
+
 }
 
 //64 - info
@@ -371,13 +416,12 @@ void HammingCode::magicencode(){
 }
 
 void HammingCode::writeToFileHamming(const string& outFileName){
-    ofstream outputHamming;cout<<outputFile[0]<<endl;
+    ofstream outputHamming;
     outputHamming.open(outFileName, ios::app);
     if (!outputHamming) {
         cout << "Can't open inFileName " << outFileName << endl;
 
     } else {
-
         outputHamming << outputFile<< endl;
     }
 
@@ -403,11 +447,14 @@ void HammingCode::returnNonSystem(){
         }
 
     }
-    cout<<"NonSystem(simple ks=0)"<<endl;
+
+    cout<<"\nNonSystem(simple ks=0)"<<endl;
+
     for(int i=0;i<71;i++){
         cout<< newSystem[i];
     }
-    cout<<endl;
+
+
     newSystem[0]=outputFile[64];
     newSystem[1]=outputFile[65];
     newSystem[3]=outputFile[66];
@@ -415,22 +462,21 @@ void HammingCode::returnNonSystem(){
     newSystem[15]=outputFile[68];
     newSystem[31]=outputFile[69];
     newSystem[63]=outputFile[70];
-    cout<<"NonSystem(simple)"<<endl;
+
+    cout<<"\nNonSystem(simple)"<<endl;
     for(int i=0;i<71;i++){
        cout<< newSystem[i];
     }
-    cout<<endl;
 
-    cout<<"SystemCode"<<endl;
+    cout<<"\nSystemCode"<<endl;
     for(int i=0;i<71;i++){
         cout<< outputFile[i];
     }
     cout<<endl;
-    //Make error
-    newSystem[56]='0';
-    //Make error
 
-
+    //Make error
+    newSystem[3]="1";
+    //Make error
 
 //START TO COUNT OF ERRORS IN FILE
     int errors = 0;
@@ -495,7 +541,7 @@ void HammingCode::returnNonSystem(){
         }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[7])-sum) !=0) errors +=8;
-    cout.flush();
+
 
     //15
     sum=0;
@@ -516,7 +562,7 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[15])-sum) !=0) errors +=16;
-    cout.flush();
+
 
 
     //31
@@ -557,8 +603,7 @@ void HammingCode::returnNonSystem(){
     }
     sum=sum % 2 == 0 ?  0 : 1;
     if((stoi(newSystem[63])-sum) != 0) errors += 64;
-    cout.flush();
-//    cout<<"sum for 63: "<< sum <<endl;
+
     int sum_unit = 0;
     for(int i=0;i<71;i++){
         if(newSystem[i]=="1") sum_unit+=1;
@@ -567,12 +612,12 @@ void HammingCode::returnNonSystem(){
     cout<<"count 1 "<<sum_unit<<endl;
     cout<<"position of error  "<<errors-1<<endl;
 
-
+//FIX SINGLE ERROR
     if (errors != 0) {
         if (newSystem[errors-1] == "0") newSystem[errors-1]= "1";
         else newSystem[errors-1]="0";
     }
-
+//DECODE IN CHAR
     string res;
 
     for (int i = 0; i <71; i++){
@@ -582,18 +627,15 @@ void HammingCode::returnNonSystem(){
         if(res.size()==8){
             for(int i=0;i<8;i++){
                 cout<<res[i];
+            }
+            bin_to_dec(res);
 
-            }bin_to_dec(res);
-            cout<<endl;
-            cout.flush();
             res.clear();
         }
     }
-
-
-
-
-
+    for(auto a:textFile){
+        cout<<a;
+    }
 
 }
 void HammingCode::bin_to_dec(const string& a){
@@ -613,7 +655,6 @@ void HammingCode::bin_to_dec(const string& a){
 void HammingCode::dec_to_ASCII(int a){
 
     char n= static_cast<char>(a);
-
-    cout<<n<<endl;
+    textFile+=n;
 
 }
