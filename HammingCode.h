@@ -10,7 +10,7 @@
 using namespace std;
 class HammingCode {
     string textFile;
-    string outputFile;
+    string outputFile;//записан защищенный файл
     int N = 8;
 
 public:
@@ -24,6 +24,10 @@ public:
     void clearOutputTextFile();
 
     void writeToFileHamming(const string &outFileName);
+
+    void retByteCode();
+
+    void returnNonSystem();
 };
 
 
